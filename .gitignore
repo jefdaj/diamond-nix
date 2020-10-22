@@ -56,3 +56,9 @@ src/extra/
 .vs/
 CMakeSettings.json
 .unison
+
+# vim files
+.*.sw*
+
+# nix files
+result
