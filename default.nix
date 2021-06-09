@@ -17,6 +17,11 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ cmake ];
   buildInputs = [ zlib ];
 
+  doInstallCheck = true;
+  installCheckPhase = ''
+    $out/bin/diamond test
+  '';
+
   meta = with stdenv.lib; {
     description = "Accelerated BLAST compatible local sequence aligner";
     longDescription = ''
