@@ -17,10 +17,10 @@ matrix:
   include:
   - os: linux
     dist: xenial
-    env: NIX_PATH=nixpkgs=channel:nixos-20.09
+    env: NIX_PATH=nixpkgs=channel:nixos-21.05
   - os: osx
     osx_image: xcode10.1
-    env: NIX_PATH=nixpkgs=channel:nixpkgs-20.09-darwin
+    env: NIX_PATH=nixpkgs=channel:nixpkgs-21.05-darwin
 
 git:
   # quiet: true
