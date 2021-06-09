@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "diamond-${version}";
-  version = "0.9.29";
+  version = "2.0.9";
 
   src = ./.;
   # src = fetchurl {
