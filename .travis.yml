@@ -1,36 +1,35 @@
-os:
-  - linux
-  - osx
+language: nix
+nix: 2.3.7
+sudo: false
 
-dist:
-#  - xenial
-  - trusty
+env:
+  global:
+  - CACHIX_CACHE=jefdaj
 
-language: c++
+install:
+- echo "trusted-users = $USER" | sudo tee -a /etc/nix/nix.conf
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then sudo launchctl kickstart -k system/org.nixos.nix-daemon && sleep 5 || true; else sudo systemctl restart nix-daemon; fi
+- nix-env -iA nixpkgs.cachix
+- cachix use $CACHIX_CACHE
 
-#addons:
-#  apt:
-#    packages:
-#      - gdb
-#      - libclang-common-6.0-dev
+matrix:
+  fast_finish: true
+  include:
+  - os: linux
+    dist: xenial
+    env: NIX_PATH=nixpkgs=channel:nixos-20.09
+  - os: osx
+    osx_image: xcode10.1
+    env: NIX_PATH=nixpkgs=channel:nixpkgs-20.09-darwin
 
-arch:
-  - amd64
-  - arm64
-  - ppc64le
-  - s390x
-
-compiler:
-  - g++
-#  - clang
-
-install: skip
+git:
+  # quiet: true
+  depth: 5
 
 script:
-  - mkdir build
-  - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release ..
-  - make
-#  - gdb --ex=r -return-child-result -batch -ex bt --args ./diamond test
-#  - lldb --batch --one-line r --one-line-on-crash bt -- ./diamond test
-  - ./diamond test
+  - nix-build release.nix
+
+notifications:
+  email:
+  on_success: false
+  on_failure: false
